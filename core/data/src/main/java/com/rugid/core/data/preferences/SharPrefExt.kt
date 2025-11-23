@@ -42,15 +42,24 @@ fun SharedPreferences.asyncEditData(
     }
 }
 
-fun <T> SharedPreferences.asyncLoadData(
+inline fun <reified T> SharedPreferences.asyncLoadData(
     key: String,
     defaultValue: T,
-    onSuccess: ((T) -> Unit)? = null,
-    onError: ((Throwable) -> Unit)? = null
+    noinline onSuccess: ((T) -> Unit)? = null,
+    noinline onError: ((Throwable) -> Unit)? = null
 ) {
     CoroutineScope(Dispatchers.IO).launch {
         try {
+            val valueFromSharPref: T = when (defaultValue) {
+                is String -> getString(key, defaultValue) as T
+                is Int -> getInt(key, defaultValue) as T
+                is Long -> getLong(key, defaultValue) as T
+                is Float -> getFloat(key, defaultValue) as T
+                is Boolean -> getBoolean(key, defaultValue) as T
+                else -> throw IllegalArgumentException("This type of value is not supported.")
+            }
 
+            onSuccess?.let { withContext(Dispatchers.Main) { it(valueFromSharPref) } }
         } catch (e: Exception) {
             onError?.let { withContext(Dispatchers.Main) { it(e) } }
         }

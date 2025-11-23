@@ -50,14 +50,14 @@ inline fun <reified T> SharedPreferences.asyncLoadData(
 ) {
     CoroutineScope(Dispatchers.IO).launch {
         try {
-            val valueFromSharPref: T = when (defaultValue) {
-                is String -> getString(key, defaultValue) as T
-                is Int -> getInt(key, defaultValue) as T
-                is Long -> getLong(key, defaultValue) as T
-                is Float -> getFloat(key, defaultValue) as T
-                is Boolean -> getBoolean(key, defaultValue) as T
+            val valueFromSharPref: T = when (T::class) {
+                String::class -> getString(key, defaultValue as String) ?: defaultValue
+                Int::class -> getInt(key, defaultValue as Int)
+                Long::class -> getLong(key, defaultValue as Long)
+                Float::class -> getFloat(key, defaultValue as Float)
+                Boolean::class -> getBoolean(key, defaultValue as Boolean)
                 else -> throw IllegalArgumentException("This type of value is not supported.")
-            }
+            } as T
 
             onSuccess?.let { withContext(Dispatchers.Main) { it(valueFromSharPref) } }
         } catch (e: Exception) {

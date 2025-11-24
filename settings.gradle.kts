@@ -22,3 +22,6 @@ dependencyResolutionManagement {
 rootProject.name = "RuGid"
 include(":app")
 include(":core:data")
+include(":core:ui")
+include(":core:model")
+include(":features:articleslist")

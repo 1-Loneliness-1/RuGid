@@ -40,6 +40,10 @@ android {
 dependencies {
     implementation(project(":core:model"))
 
+    // Navigation
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
+
     // Coroutines for android
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 

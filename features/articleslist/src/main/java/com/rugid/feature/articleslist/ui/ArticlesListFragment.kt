@@ -5,6 +5,7 @@ import com.rugid.feature.articleslist.databinding.FragmentArticlesListBinding
 
 class ArticlesListFragment(override val viewModel: ArticlesListViewModel) :
     BaseFragment<FragmentArticlesListBinding, ArticlesListViewModel>(FragmentArticlesListBinding::inflate) {
+
     override fun showLoadingState() {
         TODO("Not yet implemented")
     }

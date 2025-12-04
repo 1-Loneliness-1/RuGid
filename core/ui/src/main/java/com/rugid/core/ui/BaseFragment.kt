@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
 import com.rugid.core.model.DataState
 
@@ -13,7 +15,7 @@ abstract class BaseFragment<VB : ViewBinding, VM : BaseViewModel<*>>(
 ) : Fragment() {
 
     private var _binding: VB? = null
-    private val binding get() = _binding!!
+    protected val binding get() = _binding!!
 
     abstract val viewModel: VM
 
@@ -45,7 +47,11 @@ abstract class BaseFragment<VB : ViewBinding, VM : BaseViewModel<*>>(
         _binding = null
     }
 
-    protected open fun setupToolbar() {}
+    protected open fun setupToolbar() {
+        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner) {
+            findNavController().popBackStack()
+        }
+    }
 
     protected open fun handleDataState(dataState: DataState<*>) {
         when (dataState) {

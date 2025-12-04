@@ -10,9 +10,10 @@ fun SharedPreferences.asyncEditData(
     sharPrefMode: SharPrefMode = SharPrefMode.APPLY,
     onSuccess: (() -> Unit)? = null,
     onError: ((Throwable) -> Unit)? = null,
-    editorBlock: SharedPreferences.Editor.() -> Unit
+    coroutineScope: CoroutineScope,
+    editorBlock: SharedPreferences.Editor.() -> Unit,
 ) {
-    CoroutineScope(Dispatchers.IO).launch {
+    coroutineScope.launch {
         try {
             val editor = edit()
             editor.editorBlock()
@@ -45,10 +46,11 @@ fun SharedPreferences.asyncEditData(
 inline fun <reified T> SharedPreferences.asyncLoadData(
     key: String,
     defaultValue: T,
+    coroutineScope: CoroutineScope,
     noinline onSuccess: ((T) -> Unit)? = null,
-    noinline onError: ((Throwable) -> Unit)? = null
+    noinline onError: ((Throwable) -> Unit)? = null,
 ) {
-    CoroutineScope(Dispatchers.IO).launch {
+    coroutineScope.launch {
         try {
             val valueFromSharPref: T = when (T::class) {
                 String::class -> getString(key, defaultValue as String) ?: defaultValue

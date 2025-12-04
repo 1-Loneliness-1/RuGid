@@ -67,3 +67,32 @@ inline fun <reified T> SharedPreferences.asyncLoadData(
         }
     }
 }
+
+fun SharedPreferences.asyncRemove(
+    key: String,
+    sharPrefMode: SharPrefMode = SharPrefMode.APPLY,
+    coroutineScope: CoroutineScope,
+    onSuccess: (() -> Unit)? = null,
+    onError: ((Throwable) -> Unit)? = null,
+) = asyncEditData(
+    sharPrefMode = sharPrefMode,
+    onSuccess = onSuccess,
+    onError = onError,
+    coroutineScope = coroutineScope,
+) {
+    remove(key)
+}
+
+fun SharedPreferences.asyncClear(
+    sharPrefMode: SharPrefMode = SharPrefMode.APPLY,
+    coroutineScope: CoroutineScope,
+    onSuccess: (() -> Unit)? = null,
+    onError: ((Throwable) -> Unit)? = null,
+) = asyncEditData(
+    sharPrefMode = sharPrefMode,
+    coroutineScope = coroutineScope,
+    onSuccess = onSuccess,
+    onError = onError,
+) {
+    clear()
+}

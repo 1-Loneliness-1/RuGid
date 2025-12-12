@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bg_secondary">#FFFFFF</color>
+    <color name="bg_third">#EEEFF2</color>
+    <color name="bg_main">#F6F6F9</color>
+
+    <color name="accent_blue">#3364E0</color>
+    <color name="accent_light_blue">#3364E01a</color>
+
+    <color name="black_font_main">#000000</color>
+    <color name="black_font_secondary">#00000059</color>
+    <color name="black_font_third">#00000080</color>
+
+    <color name="white_font_main">#FFFFFF</color>
+    <color name="white_font_secondary">#FFFFFF80</color>
+
+    <color name="stroke">#E8E9EC</color>
+
+    <color name="icons1">#000000</color>
+    <color name="icons2">#FFFFFF</color>
+    <color name="icons3">#0000002e</color>
+    <color name="icons4">#00000059</color>
+    <color name="icons5">#FFD600</color>
+    <color name="tab">#A5A9B2</color>
+</resources>

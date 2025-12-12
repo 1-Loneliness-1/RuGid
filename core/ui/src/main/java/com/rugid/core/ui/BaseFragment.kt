@@ -6,9 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
 import com.rugid.core.model.DataState
+import kotlinx.coroutines.launch
 
 abstract class BaseFragment<VB : ViewBinding, VM : BaseViewModel<*>>(
     private val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> VB
@@ -62,8 +66,12 @@ abstract class BaseFragment<VB : ViewBinding, VM : BaseViewModel<*>>(
     }
 
     private fun observeViewModel() {
-        viewModel.getStateLiveData().observe(viewLifecycleOwner) { dataState ->
-            handleDataState(dataState)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.state.collect { state ->
+                    handleDataState(state)
+                }
+            }
         }
     }
 

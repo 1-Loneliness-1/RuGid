@@ -1,7 +1,10 @@
 package com.rugid.core.model
 
+import android.net.Uri
+
 data class Article(
-    val id: Long,
+    val cover: Uri,
     val title: String,
-    val content: String
+    val dateOfPublication: String,
+    val numOfViews: Long,
 )

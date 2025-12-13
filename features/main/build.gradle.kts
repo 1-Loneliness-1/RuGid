@@ -41,6 +41,10 @@ dependencies {
     implementation(project(":core:ui"))
     implementation(project(":core:model"))
 
+    // Koin
+    implementation(libs.koin.android)
+    implementation(libs.koin.androidx.viewmodel)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

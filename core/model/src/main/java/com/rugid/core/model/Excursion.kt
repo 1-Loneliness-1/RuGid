@@ -10,6 +10,6 @@ data class Excursion(
     val duration: Int,
     val numberOfPeople: Int,
     val price: Long,
-    val sale: Short = 0,
+    val sale: Int = 0,
     val rating: Float
 )

@@ -11,7 +11,7 @@ class ArticleViewHolder(
     private val binding: ItemArticleBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(model: Article) {
+    fun bind(model: Article, onClick: (Article) -> Unit) {
         Glide.with(binding.root)
             .load(model.cover)
             .centerCrop()
@@ -26,6 +26,10 @@ class ArticleViewHolder(
             .into(binding.ivArticleCover)
 
         binding.tvArticleTitle.text = model.title
+
+        binding.root.setOnClickListener {
+            onClick(model)
+        }
     }
 
 }

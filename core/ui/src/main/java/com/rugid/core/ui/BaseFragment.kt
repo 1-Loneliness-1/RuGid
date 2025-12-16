@@ -25,7 +25,7 @@ abstract class BaseFragment<VB : ViewBinding, VM : BaseViewModel<*>>(
 
     abstract fun showLoadingState()
     abstract fun showContentState()
-    abstract fun showErrorState()
+    abstract fun showErrorState(message: String)
     abstract fun initViews()
     abstract fun initListeners()
 
@@ -60,12 +60,14 @@ abstract class BaseFragment<VB : ViewBinding, VM : BaseViewModel<*>>(
     protected open fun handleDataState(dataState: DataState<*>) {
         when (dataState) {
             is DataState.Loading -> showLoadingState()
-            is DataState.Success -> showContentState()
+            is DataState.Success -> {
+                showContentState()
+            }
             is DataState.Error -> showErrorState()
         }
     }
 
-    private fun observeViewModel() {
+    protected open fun observeViewModel() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.state.collect { state ->

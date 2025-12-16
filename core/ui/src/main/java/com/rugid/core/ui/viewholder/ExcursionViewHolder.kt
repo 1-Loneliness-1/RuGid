@@ -13,7 +13,7 @@ class ExcursionViewHolder(
     private val binding: ItemExcursionBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(model: Excursion) {
+    fun bind(model: Excursion, onClick: (Excursion) -> Unit) {
         Glide.with(binding.root)
             .load(model.cover)
             .centerCrop()
@@ -41,6 +41,10 @@ class ExcursionViewHolder(
         with(binding.tvExcursionSale) {
             isVisible = model.sale != 0
             text = String.format(Locale.getDefault(), "- %d%", model.sale)
+        }
+
+        binding.root.setOnClickListener {
+            onClick(model)
         }
     }
 

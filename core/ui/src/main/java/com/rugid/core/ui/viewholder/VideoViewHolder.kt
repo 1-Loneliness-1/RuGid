@@ -11,7 +11,7 @@ class VideoViewHolder(
     private val binding: ItemVideoBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(model: Video) {
+    fun bind(model: Video, onClick: (Video) -> Unit) {
         Glide.with(binding.root)
             .load(model.cover)
             .centerCrop()
@@ -19,6 +19,10 @@ class VideoViewHolder(
             .into(binding.ivVideoPreview)
 
         binding.tvVideoTitle.text = model.title
+
+        binding.root.setOnClickListener {
+            onClick(model)
+        }
     }
 
 }

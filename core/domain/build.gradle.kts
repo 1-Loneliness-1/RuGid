@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.rugid.feature.main"
+    namespace = "com.rugid.core.domain"
     compileSdk {
         version = release(36)
     }
@@ -25,9 +25,6 @@ android {
             )
         }
     }
-    buildFeatures {
-        viewBinding = true
-    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -38,18 +35,9 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:ui"))
-    implementation(project(":core:model"))
-    implementation(project(":core:domain"))
-
-    // Koin
-    implementation(libs.koin.android)
-    implementation(libs.koin.androidx.viewmodel)
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
-    implementation(libs.androidx.ui)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

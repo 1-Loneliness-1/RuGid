@@ -11,7 +11,7 @@ class PlaceViewHolder(
     private val binding: ItemPlaceBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(model: Place) {
+    fun bind(model: Place, onClick: (Place) -> Unit) {
         Glide.with(binding.root)
             .load(model.cover)
             .centerCrop()
@@ -27,6 +27,10 @@ class PlaceViewHolder(
 
         binding.tvPlaceTitle.text = model.title
         binding.tvPlaceCategory.text = model.category
+
+        binding.root.setOnClickListener {
+            onClick(model)
+        }
     }
 
 }

@@ -1,4 +1,4 @@
-package com.rugid.feature.main.ui
+package com.rugid.feature.main.domain.model
 
 import com.rugid.core.model.Article
 import com.rugid.core.model.Excursion

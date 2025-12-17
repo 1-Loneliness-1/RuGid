@@ -1,6 +1,5 @@
 package com.rugid.feature.main.domain.repository
 
-import com.rugid.core.domain.result.DataResult
 import com.rugid.core.model.Article
 import com.rugid.core.model.Excursion
 import com.rugid.core.model.Place
@@ -9,12 +8,12 @@ import kotlinx.coroutines.flow.Flow
 
 interface MainRepository {
 
-    fun getVideos(): Flow<DataResult<List<Video>>>
+    fun getVideos(): Flow<List<Video>>
 
-    fun getArticles(): Flow<DataResult<List<Article>>>
+    fun getArticles(): Flow<List<Article>>
 
-    fun getPlaces(): Flow<DataResult<List<Place>>>
+    fun getPlaces(): Flow<List<Place>>
 
-    fun getExcursions(): Flow<DataResult<List<Excursion>>>
+    fun getExcursions(): Flow<List<Excursion>>
 
 }

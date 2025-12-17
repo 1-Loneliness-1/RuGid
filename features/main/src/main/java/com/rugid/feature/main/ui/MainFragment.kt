@@ -1,8 +1,12 @@
 package com.rugid.feature.main.ui
 
+import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.rugid.core.ui.BaseFragment
+import com.rugid.core.ui.R.dimen.*
 import com.rugid.feature.main.databinding.FragmentMainBinding
 import com.rugid.feature.main.ui.adapter.ArticleAdapter
 import com.rugid.feature.main.ui.adapter.ExcursionAdapter
@@ -12,35 +16,54 @@ import com.rugid.feature.main.ui.decoration.HorizontalSpaceItemDecoration
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainFragment :
-    BaseFragment<FragmentMainBinding, MainViewModel>(FragmentMainBinding::inflate) {
+    BaseFragment<FragmentMainBinding, MainUiState, MainViewModel>(FragmentMainBinding::inflate) {
 
     override val viewModel: MainViewModel by viewModel()
 
+    private val videoAdapter = VideoAdapter {}
+    private val articleAdapter = ArticleAdapter {}
+    private val placeAdapter = PlaceAdapter {}
+    private val excursionAdapter = ExcursionAdapter {}
+
+    fun RecyclerView.setHorizontalOrientation() {
+        layoutManager = LinearLayoutManager(
+            context,
+            RecyclerView.HORIZONTAL,
+            false
+        )
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel.getDataForMainScreen()
+    }
+
     override fun showLoadingState() {
-        TODO("Not yet implemented")
+        binding.nsvMainScreenView.visibility = View.GONE
+        binding.pbMainScreen.visibility = View.VISIBLE
     }
 
-    override fun showContentState() {
-        TODO("Not yet implemented")
+    override fun showContentState(data: MainUiState) {
+        bindLists(data)
+        binding.pbMainScreen.visibility = View.GONE
+        binding.nsvMainScreenView.visibility = View.VISIBLE
     }
 
-    override fun showErrorState() {
-        Toast.makeText(requireContext(), "Произошла ошибка")
+    override fun showErrorState(message: String) {
+        binding.nsvMainScreenView.visibility = View.GONE
+        binding.pbMainScreen.visibility = View.GONE
+        Toast.makeText(requireContext(), "Произошла ошибка $message", Toast.LENGTH_SHORT).show()
     }
 
     override fun initViews() {
-        val videoAdapter = VideoAdapter {}
-        val articleAdapter = ArticleAdapter {}
-        val placeAdapter = PlaceAdapter {}
-        val excursionAdapter = ExcursionAdapter {}
 
         binding.rvVideos.adapter = videoAdapter
         binding.rvArticles.adapter = articleAdapter
         binding.rvInterestingPlaces.adapter = placeAdapter
         binding.rvInterestingExcursions.adapter = excursionAdapter
 
-        val space =
-            resources.getDimensionPixelSize(HORIZONTAL_SPACE_FOR_RECYCLERVIEW_IN_DP)
+        val space = resources.getDimensionPixelSize(padding_8dp)
         val horizontalSpaceItemDecoration = HorizontalSpaceItemDecoration(space)
 
         binding.rvVideos.addItemDecoration(horizontalSpaceItemDecoration)
@@ -48,23 +71,19 @@ class MainFragment :
         binding.rvInterestingPlaces.addItemDecoration(horizontalSpaceItemDecoration)
         binding.rvInterestingExcursions.addItemDecoration(horizontalSpaceItemDecoration)
 
-        val layoutManagerForRecyclerViews = LinearLayoutManager(
-            context,
-            LinearLayoutManager.HORIZONTAL,
-            false
-        )
-        binding.rvVideos.layoutManager = layoutManagerForRecyclerViews
-        binding.rvArticles.layoutManager = layoutManagerForRecyclerViews
-        binding.rvInterestingPlaces.layoutManager = layoutManagerForRecyclerViews
-        binding.rvInterestingExcursions.layoutManager = layoutManagerForRecyclerViews
+        binding.rvVideos.setHorizontalOrientation()
+        binding.rvArticles.setHorizontalOrientation()
+        binding.rvInterestingPlaces.setHorizontalOrientation()
+        binding.rvInterestingExcursions.setHorizontalOrientation()
     }
 
-    override fun initListeners() {
-        TODO("Not yet implemented")
-    }
+    override fun initListeners() {}
 
-    companion object {
-        private const val HORIZONTAL_SPACE_FOR_RECYCLERVIEW_IN_DP = 8
+    private fun bindLists(data: MainUiState) {
+        videoAdapter.submitList(data.videos)
+        articleAdapter.submitList(data.articles)
+        placeAdapter.submitList(data.places)
+        excursionAdapter.submitList(data.excursions)
     }
 
 }

@@ -40,6 +40,7 @@ android {
 
 dependencies {
     implementation(project(":core:model"))
+    implementation(project(":core:domain"))
 
     // Navigation
     implementation(libs.androidx.navigation.fragment.ktx)

@@ -1,8 +1,6 @@
 package com.rugid.feature.main.data.repository
 
 import androidx.core.net.toUri
-import com.rugid.core.domain.result.DataResult
-import com.rugid.core.domain.result.DomainError
 import com.rugid.core.model.Article
 import com.rugid.core.model.Excursion
 import com.rugid.core.model.Place
@@ -16,16 +14,17 @@ import com.rugid.feature.main.data.mapper.ExcursionDtoMapper
 import com.rugid.feature.main.data.mapper.PlaceDtoMapper
 import com.rugid.feature.main.data.mapper.VideoDtoMapper
 import com.rugid.feature.main.domain.repository.MainRepository
-import java.io.IOException
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 
-class MainRepositoryImpl : MainRepository {
-
-    private val videoDtoMapper = VideoDtoMapper()
-    private val articleDtoMapper = ArticleDtoMapper()
-    private val placeDtoMapper = PlaceDtoMapper()
-    private val excursionDtoMapper = ExcursionDtoMapper()
+class MainRepositoryImpl(
+    private val videoDtoMapper: VideoDtoMapper,
+    private val articleDtoMapper: ArticleDtoMapper,
+    private val placeDtoMapper: PlaceDtoMapper,
+    private val excursionDtoMapper: ExcursionDtoMapper,
+) : MainRepository {
 
     private val tempDataWithVideos = listOf(
         VideoDto("https://picsum.photos/200/300".toUri(), "Титульник 1 для видео"),
@@ -120,95 +119,64 @@ class MainRepositoryImpl : MainRepository {
         ),
     )
 
-    override fun getVideos(): Flow<DataResult<List<Video>>> {
+    override fun getVideos(): Flow<List<Video>> {
         return flow {
-            try {
-                // val response: GetVideosResponse = networkClient.doRequest()
-                // if (response.code != 200) {
-                //      emit(mapError(response.code))
-                //      return@flow
-                // }
+            // val response: GetVideosResponse = networkClient.doRequest()
+            // if (response.code != 200) {
+            //      emit(mapError(response.code))
+            //      return@flow
+            // }
 
-                // val videos = response.data.map(videoMapper::map)
-                // emit(DataResult.Success(videos))
+            // val videos = response.data.map(videoMapper::map)
+            // emit(DataResult.Success(videos))
 
-                emit(DataResult.Success(tempDataWithVideos.map(videoDtoMapper::map)))
-            } catch (_: IOException) {
-                emit(DataResult.Error(DomainError.Network()))
-            } catch (e: Exception) {
-                emit(DataResult.Error(DomainError.Unknown(e)))
-            }
-        }
+            emit(tempDataWithVideos.map(videoDtoMapper::map))
+        }.flowOn(Dispatchers.IO)
     }
 
-    override fun getArticles(): Flow<DataResult<List<Article>>> {
+    override fun getArticles(): Flow<List<Article>> {
         return flow {
-            try {
-                // val response: GetArticlesResponse = networkClient.doRequest()
-                // if (response.code != 200) {
-                //      emit(mapError(response.code))
-                //      return@flow
-                // }
+            // val response: GetArticlesResponse = networkClient.doRequest()
+            // if (response.code != 200) {
+            //      emit(mapError(response.code))
+            //      return@flow
+            // }
 
-                // val videos = response.data.map(videoMapper::map)
-                // emit(DataResult.Success(videos))
+            // val videos = response.data.map(videoMapper::map)
+            // emit(DataResult.Success(videos))
 
-                emit(DataResult.Success(tempDataWithArticles.map(articleDtoMapper::map)))
-            } catch (_: IOException) {
-                emit(DataResult.Error(DomainError.Network()))
-            } catch (e: Exception) {
-                emit(DataResult.Error(DomainError.Unknown(e)))
-            }
-        }
+            emit(tempDataWithArticles.map(articleDtoMapper::map))
+        }.flowOn(Dispatchers.IO)
     }
 
-    override fun getPlaces(): Flow<DataResult<List<Place>>> {
+    override fun getPlaces(): Flow<List<Place>> {
         return flow {
-            try {
-                // val response: GetPlacesResponse = networkClient.doRequest()
-                // if (response.code != 200) {
-                //      emit(mapError(response.code))
-                //      return@flow
-                // }
+            // val response: GetPlacesResponse = networkClient.doRequest()
+            // if (response.code != 200) {
+            //      emit(mapError(response.code))
+            //      return@flow
+            // }
 
-                // val videos = response.data.map(videoMapper::map)
-                // emit(DataResult.Success(videos))
+            // val videos = response.data.map(videoMapper::map)
+            // emit(DataResult.Success(videos))
 
-                emit(DataResult.Success(tempDataWithPlaces.map(placeDtoMapper::map)))
-            } catch (_: IOException) {
-                emit(DataResult.Error(DomainError.Network()))
-            } catch (e: Exception) {
-                emit(DataResult.Error(DomainError.Unknown(e)))
-            }
-        }
+            emit(tempDataWithPlaces.map(placeDtoMapper::map))
+        }.flowOn(Dispatchers.IO)
     }
 
-    override fun getExcursions(): Flow<DataResult<List<Excursion>>> {
+    override fun getExcursions(): Flow<List<Excursion>> {
         return flow {
-            try {
-                // val response: GetExcursionsResponse = networkClient.doRequest()
-                // if (response.code != 200) {
-                //      emit(mapError(response.code))
-                //      return@flow
-                // }
+            // val response: GetExcursionsResponse = networkClient.doRequest()
+            // if (response.code != 200) {
+            //      emit(mapError(response.code))
+            //      return@flow
+            // }
 
-                // val videos = response.data.map(videoMapper::map)
-                // emit(DataResult.Success(videos))
+            // val videos = response.data.map(videoMapper::map)
+            // emit(DataResult.Success(videos))
 
-                emit(DataResult.Success(tempDataWithExcursions.map(excursionDtoMapper::map)))
-            } catch (_: IOException) {
-                emit(DataResult.Error(DomainError.Network()))
-            } catch (e: Exception) {
-                emit(DataResult.Error(DomainError.Unknown(e)))
-            }
-        }
+            emit(tempDataWithExcursions.map(excursionDtoMapper::map))
+        }.flowOn(Dispatchers.IO)
     }
-
-    private fun mapError(code: Int) =
-        when (code) {
-            404 -> DomainError.NotFound()
-            in 500..599 -> DomainError.Server()
-            else -> DomainError.Unknown(Throwable("Unknown error"))
-        }
 
 }

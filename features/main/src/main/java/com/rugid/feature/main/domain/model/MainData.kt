@@ -5,7 +5,7 @@ import com.rugid.core.model.Excursion
 import com.rugid.core.model.Place
 import com.rugid.core.model.Video
 
-data class MainUiState(
+data class MainData(
     val videos: List<Video> = emptyList(),
     val articles: List<Article> = emptyList(),
     val places: List<Place> = emptyList(),

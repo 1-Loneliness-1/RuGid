@@ -11,10 +11,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
-import com.rugid.core.model.DataState
 import kotlinx.coroutines.launch
 
-abstract class BaseFragment<VB : ViewBinding, VM : BaseViewModel<*>>(
+abstract class BaseFragment<VB : ViewBinding, T, VM : BaseViewModel<T>>(
     private val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> VB
 ) : Fragment() {
 
@@ -24,7 +23,7 @@ abstract class BaseFragment<VB : ViewBinding, VM : BaseViewModel<*>>(
     abstract val viewModel: VM
 
     abstract fun showLoadingState()
-    abstract fun showContentState()
+    abstract fun showContentState(data: T)
     abstract fun showErrorState(message: String)
     abstract fun initViews()
     abstract fun initListeners()
@@ -57,13 +56,11 @@ abstract class BaseFragment<VB : ViewBinding, VM : BaseViewModel<*>>(
         }
     }
 
-    protected open fun handleDataState(dataState: DataState<*>) {
+    protected open fun handleDataState(dataState: DataState<T>) {
         when (dataState) {
             is DataState.Loading -> showLoadingState()
-            is DataState.Success -> {
-                showContentState()
-            }
-            is DataState.Error -> showErrorState()
+            is DataState.Success -> showContentState(dataState.data)
+            is DataState.Error -> showErrorState(dataState.error.message ?: "Неизвестная ошибка")
         }
     }
 

@@ -25,7 +25,7 @@
             android:layout_gravity="center_vertical"
             app:drawableStartCompat="@drawable/type_location"
             android:drawablePadding="4dp"
-            tools:text="Новосибирск" />
+            android:text="@string/city_placeholder" />
 
         <View
             android:layout_width="0dp"

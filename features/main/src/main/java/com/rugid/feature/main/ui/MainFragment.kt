@@ -1,22 +1,25 @@
 package com.rugid.feature.main.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.rugid.core.ui.BaseFragment
-import com.rugid.core.ui.R.dimen.*
+import com.rugid.core.ui.R.dimen.padding_8dp
 import com.rugid.feature.main.databinding.FragmentMainBinding
+import com.rugid.feature.main.domain.model.MainData
 import com.rugid.feature.main.ui.adapter.ArticleAdapter
 import com.rugid.feature.main.ui.adapter.ExcursionAdapter
 import com.rugid.feature.main.ui.adapter.PlaceAdapter
 import com.rugid.feature.main.ui.adapter.VideoAdapter
 import com.rugid.feature.main.ui.decoration.HorizontalSpaceItemDecoration
+import com.rugid.feature.main.ui.mapper.toUiError
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainFragment :
-    BaseFragment<FragmentMainBinding, MainUiState, MainViewModel>(FragmentMainBinding::inflate) {
+    BaseFragment<FragmentMainBinding, MainData, MainViewModel>(FragmentMainBinding::inflate) {
 
     override val viewModel: MainViewModel by viewModel()
 
@@ -44,16 +47,27 @@ class MainFragment :
         binding.pbMainScreen.visibility = View.VISIBLE
     }
 
-    override fun showContentState(data: MainUiState) {
+    override fun showContentState(data: MainData) {
         bindLists(data)
         binding.pbMainScreen.visibility = View.GONE
         binding.nsvMainScreenView.visibility = View.VISIBLE
     }
 
-    override fun showErrorState(message: String) {
+    override fun showErrorState(error: Throwable) {
+        val uiError = error.toUiError()
         binding.nsvMainScreenView.visibility = View.GONE
         binding.pbMainScreen.visibility = View.GONE
-        Toast.makeText(requireContext(), "Произошла ошибка $message", Toast.LENGTH_SHORT).show()
+        when (uiError) {
+            is MainUiError.NetworkError -> {
+                Toast.makeText(requireContext(), "Проблемы с интернетом...", Toast.LENGTH_SHORT)
+                    .show()
+            }
+
+            is MainUiError.UnknownError -> {
+                Toast.makeText(requireContext(), "Проблемы с интернетом...", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
     }
 
     override fun initViews() {
@@ -79,7 +93,8 @@ class MainFragment :
 
     override fun initListeners() {}
 
-    private fun bindLists(data: MainUiState) {
+    private fun bindLists(data: MainData) {
+        Log.d("myFuckingVideosListSize", data.videos[0].cover)
         videoAdapter.submitList(data.videos)
         articleAdapter.submitList(data.articles)
         placeAdapter.submitList(data.places)

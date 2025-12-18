@@ -14,10 +14,7 @@ class HorizontalSpaceItemDecoration(
         parent: RecyclerView,
         state: RecyclerView.State
     ) {
-        val position = parent.getChildAdapterPosition(view)
-        val itemCount = state.itemCount
-
-        outRect.right = if (position == itemCount - 1) 0 else space
+        outRect.right = space
     }
 
 }

@@ -1,9 +1,7 @@
 package com.rugid.core.model
 
-import android.net.Uri
-
 data class Excursion(
-    val cover: Uri,
+    val cover: String,
     val title: String,
     val category: String,
     val type: String,

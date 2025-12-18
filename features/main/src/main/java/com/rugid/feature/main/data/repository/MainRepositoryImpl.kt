@@ -1,6 +1,5 @@
 package com.rugid.feature.main.data.repository
 
-import androidx.core.net.toUri
 import com.rugid.core.model.Article
 import com.rugid.core.model.Excursion
 import com.rugid.core.model.Place
@@ -27,46 +26,46 @@ class MainRepositoryImpl(
 ) : MainRepository {
 
     private val tempDataWithVideos = listOf(
-        VideoDto("https://picsum.photos/200/300".toUri(), "Титульник 1 для видео"),
+        VideoDto("https://loremflickr.com/200/300?lock=1", "Титульник 1"),
         VideoDto(
-            "https://picsum.photos/200/300".toUri(),
+            "https://loremflickr.com/200/300?lock=2",
             "Длинный титульник для проверки трех точек в конце"
         ),
-        VideoDto("https://picsum.photos/200/300".toUri(), "Еще какой-то титульник для количества"),
-        VideoDto("https://picsum.photos/200/300".toUri(), "Второй титульник"),
+        VideoDto("https://loremflickr.com/200/300?lock=3", "Еще какой-то титульник для количества"),
+        VideoDto("https://loremflickr.com/200/300?lock=4", "Второй титульник"),
     )
     private val tempDataWithArticles = listOf(
-        ArticleDto("https://picsum.photos/300/200".toUri(), "Статья 1", "15.12.2025", 1000),
+        ArticleDto("https://loremflickr.com/300/200?lock=1", "Статья 1", "15.12.2025", 1000),
         ArticleDto(
-            "https://picsum.photos/300/200".toUri(),
-            "Длинное название для статьи 2",
+            "https://loremflickr.com/300/200?lock=2",
+            "Длинное название для статьи 2 чтобы занять обе строки и посмотреть визуал",
             "11.06.2021",
             1200
         ),
-        ArticleDto("https://picsum.photos/300/200".toUri(), "Еще вариант 2", "08.03.2011", 1000),
+        ArticleDto("https://loremflickr.com/300/200?lock=3", "Еще вариант 2", "08.03.2011", 1000),
         ArticleDto(
-            "https://picsum.photos/300/200".toUri(),
+            "https://loremflickr.com/300/200?lock=4",
             "Какая-то статья чтобы длинная",
             "17.09.2019",
             5530
         ),
         ArticleDto(
-            "https://picsum.photos/300/200".toUri(),
+            "https://loremflickr.com/300/200?lock=5",
             "Последняя статья в списке",
             "01.10.2020",
             10
         ),
     )
     private val tempDataWithPlaces = listOf(
-        PlaceDto("https://picsum.photos/300/200".toUri(), "Место 1", "Музей", 4.9f),
+        PlaceDto("https://loremflickr.com/300/200?lock=6", "Место 1", "Музей", 4.9f),
         PlaceDto(
-            "https://picsum.photos/300/200".toUri(),
+            "https://loremflickr.com/600/400",
             "Длинное название места для проверки",
             "Погулять",
             3.0f
         ),
         PlaceDto(
-            "https://picsum.photos/300/200".toUri(),
+            "https://loremflickr.com/300/200?lock=7",
             "Еще одно какое-то место",
             "Галерея",
             3.9f
@@ -74,7 +73,7 @@ class MainRepositoryImpl(
     )
     private val tempDataWithExcursions = listOf(
         ExcursionDto(
-            "https://picsum.photos/300/200".toUri(),
+            "https://loremflickr.com/300/200?lock=8",
             "Экскурсия 1",
             "Автобусная",
             "Обзорная",
@@ -85,7 +84,7 @@ class MainRepositoryImpl(
             5.0f
         ),
         ExcursionDto(
-            "https://picsum.photos/300/200".toUri(),
+            "https://loremflickr.com/300/200?lock=9",
             "Длинное название экскурсии",
             "Автомобильная",
             "Обзорная",
@@ -96,7 +95,7 @@ class MainRepositoryImpl(
             3.5f
         ),
         ExcursionDto(
-            "https://picsum.photos/300/200".toUri(),
+            "https://loremflickr.com/300/200?lock=10",
             "Еще одна какая-то экскурсия",
             "Пешая",
             "Обзорная",
@@ -107,7 +106,7 @@ class MainRepositoryImpl(
             4.1f
         ),
         ExcursionDto(
-            "https://picsum.photos/300/200".toUri(),
+            "https://loremflickr.com/300/200?lock=11",
             "Последняя экскурсия",
             "Автобусная",
             "Обзорная",

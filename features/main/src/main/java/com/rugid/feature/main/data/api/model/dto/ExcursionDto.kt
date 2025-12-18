@@ -1,9 +1,7 @@
 package com.rugid.feature.main.data.api.model.dto
 
-import android.net.Uri
-
 data class ExcursionDto(
-    val cover: Uri,
+    val cover: String,
     val title: String,
     val category: String,
     val type: String,

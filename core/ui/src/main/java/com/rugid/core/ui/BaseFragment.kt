@@ -13,7 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
 import kotlinx.coroutines.launch
 
-abstract class BaseFragment<VB : ViewBinding, T, VM : BaseViewModel<T>>(
+abstract class BaseFragment<VB : ViewBinding, T, VM : BaseViewModel<ScreenState<T>>>(
     private val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> VB
 ) : Fragment() {
 
@@ -24,7 +24,7 @@ abstract class BaseFragment<VB : ViewBinding, T, VM : BaseViewModel<T>>(
 
     abstract fun showLoadingState()
     abstract fun showContentState(data: T)
-    abstract fun showErrorState(message: String)
+    abstract fun showErrorState(error: Throwable)
     abstract fun initViews()
     abstract fun initListeners()
 
@@ -56,19 +56,19 @@ abstract class BaseFragment<VB : ViewBinding, T, VM : BaseViewModel<T>>(
         }
     }
 
-    protected open fun handleDataState(dataState: DataState<T>) {
-        when (dataState) {
-            is DataState.Loading -> showLoadingState()
-            is DataState.Success -> showContentState(dataState.data)
-            is DataState.Error -> showErrorState(dataState.error.message ?: "Неизвестная ошибка")
+    protected open fun handleScreenState(state: ScreenState<T>) {
+        when (state) {
+            is ScreenState.Loading -> showLoadingState()
+            is ScreenState.Content -> showContentState(state.data)
+            is ScreenState.Error -> showErrorState(state.error)
         }
     }
 
     protected open fun observeViewModel() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.state.collect { state ->
-                    handleDataState(state)
+                viewModel.state.collect { state: ScreenState<T> ->
+                    handleScreenState(state)
                 }
             }
         }

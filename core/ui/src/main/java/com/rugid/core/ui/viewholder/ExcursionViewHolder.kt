@@ -1,12 +1,10 @@
 package com.rugid.core.ui.viewholder
 
-import androidx.core.view.isVisible
+import androidx.core.view.isInvisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
 import com.rugid.core.model.Excursion
 import com.rugid.core.ui.databinding.ItemExcursionBinding
-import com.rugid.core.ui.extensions.dp
 import java.util.Locale
 
 class ExcursionViewHolder(
@@ -17,14 +15,6 @@ class ExcursionViewHolder(
         Glide.with(binding.root)
             .load(model.cover)
             .centerCrop()
-            .transform(
-                GranularRoundedCorners(
-                    10.dp.toFloat(),
-                    10.dp.toFloat(),
-                    0f,
-                    0f
-                )
-            )
             .into(binding.ivExcursionCover)
 
         binding.tvExcursionTitle.text = model.title
@@ -39,8 +29,8 @@ class ExcursionViewHolder(
             String.format(Locale.getDefault(), "от %d ₽", model.price)
 
         with(binding.tvExcursionSale) {
-            isVisible = model.sale != 0
-            text = String.format(Locale.getDefault(), "- %d%", model.sale)
+            isInvisible = model.sale == 0
+            text = String.format(Locale.getDefault(), "- %d%%", model.sale)
         }
 
         binding.root.setOnClickListener {

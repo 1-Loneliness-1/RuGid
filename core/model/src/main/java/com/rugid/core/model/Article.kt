@@ -1,7 +1,8 @@
 package com.rugid.core.model
 
 data class Article(
-    val id: Long,
+    val cover: String,
     val title: String,
-    val content: String
+    val dateOfPublication: String,
+    val numOfViews: Long,
 )

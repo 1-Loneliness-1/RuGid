@@ -1,30 +1,35 @@
 package com.rugid.core.ui
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.rugid.core.model.DataState
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
 abstract class BaseViewModel<T> : ViewModel() {
 
-    private val _state = MutableLiveData<DataState<T>>(DataState.Loading)
-    fun getStateLiveData(): LiveData<DataState<T>> =
-        _state
+    protected val _state: MutableStateFlow<T> by lazy {
+        MutableStateFlow(initStateOfStateFlow())
+    }
+    val state: StateFlow<T> = _state
 
-    protected fun getData(
-        block: suspend () -> T
+    protected abstract fun initStateOfStateFlow(): T
+
+    protected fun <T> getData(
+        flow: Flow<T>,
+        onEach: (T) -> Unit,
+        onError: (Throwable) -> Unit = {},
     ) {
         viewModelScope.launch {
-            _state.postValue(DataState.Loading)
-
-            try {
-                val result = block()
-                _state.postValue(DataState.Success(result))
-            } catch (e: Throwable) {
-                _state.postValue(DataState.Error(e))
-            }
+            flow
+                .catch { e ->
+                    if (e is CancellationException) throw e
+                    onError(e)
+                }
+                .collect { onEach(it) }
         }
     }
 

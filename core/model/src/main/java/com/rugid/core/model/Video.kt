@@ -1,4 +1,6 @@
 package com.rugid.core.model
 
-class Video {
-}
+data class Video(
+    val cover: String,
+    val title: String,
+)

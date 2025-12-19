@@ -6,11 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
-import com.rugid.core.model.DataState
+import kotlinx.coroutines.launch
 
-abstract class BaseFragment<VB : ViewBinding, VM : BaseViewModel<*>>(
+abstract class BaseFragment<VB : ViewBinding, T, VM : BaseViewModel<ScreenState<T>>>(
     private val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> VB
 ) : Fragment() {
 
@@ -20,8 +23,8 @@ abstract class BaseFragment<VB : ViewBinding, VM : BaseViewModel<*>>(
     abstract val viewModel: VM
 
     abstract fun showLoadingState()
-    abstract fun showContentState()
-    abstract fun showErrorState()
+    abstract fun showContentState(data: T)
+    abstract fun showErrorState(error: Throwable)
     abstract fun initViews()
     abstract fun initListeners()
 
@@ -53,17 +56,21 @@ abstract class BaseFragment<VB : ViewBinding, VM : BaseViewModel<*>>(
         }
     }
 
-    protected open fun handleDataState(dataState: DataState<*>) {
-        when (dataState) {
-            is DataState.Loading -> showLoadingState()
-            is DataState.Success -> showContentState()
-            is DataState.Error -> showErrorState()
+    protected open fun handleScreenState(state: ScreenState<T>) {
+        when (state) {
+            is ScreenState.Loading -> showLoadingState()
+            is ScreenState.Content -> showContentState(state.data)
+            is ScreenState.Error -> showErrorState(state.error)
         }
     }
 
-    private fun observeViewModel() {
-        viewModel.getStateLiveData().observe(viewLifecycleOwner) { dataState ->
-            handleDataState(dataState)
+    protected open fun observeViewModel() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.state.collect { state: ScreenState<T> ->
+                    handleScreenState(state)
+                }
+            }
         }
     }
 

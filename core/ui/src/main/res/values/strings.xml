@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="videos">Видео</string>
+    <string name="articles">Статьи</string>
+    <string name="interesting_places">Интересные места</string>
+    <string name="interesting_excursions">Интересные экскурсии</string>
+    <string name="city_placeholder">Новосибирск</string>
+</resources>

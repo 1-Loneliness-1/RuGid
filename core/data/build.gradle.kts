@@ -37,6 +37,9 @@ android {
 dependencies {
     implementation(project(":core:domain"))
 
+    // Koin
+    implementation(libs.koin.android)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

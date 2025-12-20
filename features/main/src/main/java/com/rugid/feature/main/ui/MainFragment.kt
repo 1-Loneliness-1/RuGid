@@ -18,8 +18,6 @@ import com.rugid.feature.main.ui.adapter.ExcursionAdapter
 import com.rugid.feature.main.ui.adapter.PlaceAdapter
 import com.rugid.feature.main.ui.adapter.VideoAdapter
 import com.rugid.feature.main.ui.decoration.HorizontalSpaceItemDecoration
-import com.rugid.feature.main.ui.mapper.toUiError
-import com.rugid.feature.main.ui.model.MainUiError
 import com.rugid.feature.main.ui.model.MainUiEvent
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -60,20 +58,24 @@ class MainFragment :
     override fun showLoadingState() {
         binding.nsvMainScreenView.visibility = View.GONE
         binding.pbMainScreen.visibility = View.VISIBLE
+        binding.srlMainRefresh.isRefreshing = false
     }
 
     override fun showContentState(data: MainData) {
         bindLists(data)
         binding.pbMainScreen.visibility = View.GONE
         binding.nsvMainScreenView.visibility = View.VISIBLE
+        binding.srlMainRefresh.isRefreshing = false
     }
 
     override fun showErrorState(error: Throwable) {
-        val uiError = error.toUiError()
         binding.pbMainScreen.visibility = View.GONE
-        if (uiError is MainUiError.UnknownError) {
-            Toast.makeText(requireContext(), "Ошибка ${uiError.message}", Toast.LENGTH_SHORT).show()
-        }
+        binding.srlMainRefresh.isRefreshing = false
+        Toast.makeText(
+            requireContext(),
+            error.localizedMessage ?: "Произошла какая-то не сетевая ошибка...",
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
     override fun initViews() {
@@ -97,7 +99,11 @@ class MainFragment :
         binding.rvInterestingExcursions.setHorizontalOrientation()
     }
 
-    override fun initListeners() {}
+    override fun initListeners() {
+        binding.srlMainRefresh.setOnRefreshListener {
+            viewModel.onRefresh()
+        }
+    }
 
     private fun observeUiEvents() {
         viewLifecycleOwner.lifecycleScope.launch {
@@ -115,6 +121,9 @@ class MainFragment :
                 view?.post {
                     (requireActivity() as AppNavigator).openNetworkErrorFragment()
                 }
+            }
+            is MainUiEvent.RefreshScreen -> {
+                viewModel.getDataForMainScreen()
             }
         }
     }

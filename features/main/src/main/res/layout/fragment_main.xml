@@ -7,83 +7,91 @@
     android:background="@color/bg_main"
     tools:context=".ui.MainFragment">
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/nsvMainScreenView"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/srlMainRefresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nsvMainScreenView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/padding_16dp"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvVideos"
-                style="@style/Headline2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="@string/videos" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvVideos"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/padding_16dp" />
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/padding_16dp"
+                android:orientation="vertical">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvArticles"
-                style="@style/Headline2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:layout_marginEnd="18dp"
-                android:text="@string/articles"
-                app:drawableEndCompat="@drawable/type_arrow_next" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvVideos"
+                    style="@style/Headline2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/videos" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvArticles"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/padding_16dp" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvVideos"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/padding_16dp" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvInterestingPlaces"
-                style="@style/Headline2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:layout_marginEnd="18dp"
-                android:text="@string/interesting_places"
-                app:drawableEndCompat="@drawable/type_arrow_next" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvArticles"
+                    style="@style/Headline2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginEnd="18dp"
+                    android:text="@string/articles"
+                    app:drawableEndCompat="@drawable/type_arrow_next" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvInterestingPlaces"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/padding_16dp" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvArticles"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/padding_16dp" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvInterestingExcursions"
-                style="@style/Headline2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:layout_marginEnd="18dp"
-                android:text="@string/interesting_excursions"
-                app:drawableEndCompat="@drawable/type_arrow_next" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvInterestingPlaces"
+                    style="@style/Headline2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginEnd="18dp"
+                    android:text="@string/interesting_places"
+                    app:drawableEndCompat="@drawable/type_arrow_next" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvInterestingExcursions"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/padding_16dp"
-                android:layout_marginBottom="12dp" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvInterestingPlaces"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/padding_16dp" />
 
-        </LinearLayout>
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvInterestingExcursions"
+                    style="@style/Headline2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginEnd="18dp"
+                    android:text="@string/interesting_excursions"
+                    app:drawableEndCompat="@drawable/type_arrow_next" />
 
-    </androidx.core.widget.NestedScrollView>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvInterestingExcursions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/padding_16dp"
+                    android:layout_marginBottom="12dp" />
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <ProgressBar
         android:id="@+id/pbMainScreen"

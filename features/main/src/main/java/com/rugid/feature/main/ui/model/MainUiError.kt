@@ -1,4 +1,4 @@
-package com.rugid.feature.main.ui
+package com.rugid.feature.main.ui.model
 
 sealed class MainUiError {
 

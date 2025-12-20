@@ -42,11 +42,19 @@ android {
 
 dependencies {
     implementation(project(":core:ui"))
+    implementation(project(":core:domain"))
+    implementation(project(":core:data"))
     implementation(project(":features:main"))
+    implementation(project(":features:networkerror"))
 
     implementation(libs.androidx.fragment.ktx)
 
+    // Koin
     implementation(libs.koin.android)
+
+    // Navigation
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

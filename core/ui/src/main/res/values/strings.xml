@@ -5,4 +5,7 @@
     <string name="interesting_places">Интересные места</string>
     <string name="interesting_excursions">Интересные экскурсии</string>
     <string name="city_placeholder">Новосибирск</string>
+    <string name="no_connection">Нет соединения</string>
+    <string name="no_connection_details">Проверьте соединение с сетью\n и обновите страницу</string>
+    <string name="refresh">Обновить</string>
 </resources>

@@ -11,6 +11,7 @@
     tools:context=".RootActivity">
 
     <LinearLayout
+        android:id="@+id/llMainToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -46,10 +47,14 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fcvRootContainer"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/main_navigation_graph" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bnvMainBottomMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

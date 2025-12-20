@@ -1,7 +1,7 @@
 package com.rugid.feature.main.ui.mapper
 
 import com.rugid.core.domain.result.DomainError
-import com.rugid.feature.main.ui.MainUiError
+import com.rugid.feature.main.ui.model.MainUiError
 
 fun Throwable.toUiError(): MainUiError =
     when (this) {

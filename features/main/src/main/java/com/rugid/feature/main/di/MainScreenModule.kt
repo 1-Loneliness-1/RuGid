@@ -16,7 +16,7 @@ val mainScreenModule = module {
     viewModel { MainViewModel(get()) }
 
     factory<GetMainScreenContentInteractor> {
-        GetMainScreenContentInteractorImpl(get())
+        GetMainScreenContentInteractorImpl(get(), get())
     }
 
     factory<MainRepository> {

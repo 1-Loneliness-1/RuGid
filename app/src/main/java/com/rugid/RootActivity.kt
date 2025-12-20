@@ -1,27 +1,51 @@
 package com.rugid
 
 import android.os.Bundle
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.commit
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import com.rugid.core.ui.navigation.AppNavigator
 import com.rugid.databinding.ActivityRootBinding
-import com.rugid.feature.main.ui.MainFragment
 
-class RootActivity : AppCompatActivity() {
+class RootActivity : AppCompatActivity(), AppNavigator {
 
-    private var binding: ActivityRootBinding? = null
+    private var _binding: ActivityRootBinding? = null
+    private val binding get() = _binding!!
+    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        binding = ActivityRootBinding.inflate(layoutInflater)
-        setContentView(binding?.root)
+        _binding = ActivityRootBinding.inflate(layoutInflater)
+        setContentView(_binding?.root)
 
-        // Временно для реализации фичи с обновлением контента отображаем только главный экран в контейнере
-        if (savedInstanceState == null) {
-            supportFragmentManager.commit {
-                replace(R.id.fcvRootContainer, MainFragment())
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.fcvRootContainer) as NavHostFragment
+        navController = navHostFragment.navController
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.networkErrorFragment -> {
+                    binding.bnvMainBottomMenu.visibility = View.GONE
+                    binding.llMainToolbar.visibility = View.GONE
+                }
+
+                else -> {
+                    binding.bnvMainBottomMenu.visibility = View.VISIBLE
+                    binding.llMainToolbar.visibility = View.VISIBLE
+                }
             }
         }
     }
+
+    override fun openNetworkErrorFragment() {
+        navController.navigate(R.id.networkErrorFragment)
+    }
+
+    override fun goBack() {
+        navController.popBackStack()
+    }
+
 }

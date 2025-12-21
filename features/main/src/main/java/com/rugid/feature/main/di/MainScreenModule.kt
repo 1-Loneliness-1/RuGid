@@ -13,10 +13,10 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val mainScreenModule = module {
-    viewModel { MainViewModel(get()) }
+    viewModel { MainViewModel(get(), get(), get()) }
 
     factory<GetMainScreenContentInteractor> {
-        GetMainScreenContentInteractorImpl(get())
+        GetMainScreenContentInteractorImpl(get(), get())
     }
 
     factory<MainRepository> {

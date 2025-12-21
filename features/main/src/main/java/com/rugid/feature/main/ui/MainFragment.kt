@@ -1,13 +1,16 @@
 package com.rugid.feature.main.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.rugid.core.ui.BaseFragment
 import com.rugid.core.ui.R.dimen.padding_8dp
+import com.rugid.core.ui.navigation.AppNavigator
 import com.rugid.feature.main.databinding.FragmentMainBinding
 import com.rugid.feature.main.domain.model.MainData
 import com.rugid.feature.main.ui.adapter.ArticleAdapter
@@ -15,7 +18,8 @@ import com.rugid.feature.main.ui.adapter.ExcursionAdapter
 import com.rugid.feature.main.ui.adapter.PlaceAdapter
 import com.rugid.feature.main.ui.adapter.VideoAdapter
 import com.rugid.feature.main.ui.decoration.HorizontalSpaceItemDecoration
-import com.rugid.feature.main.ui.mapper.toUiError
+import com.rugid.feature.main.ui.model.MainUiEvent
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainFragment :
@@ -39,35 +43,39 @@ class MainFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        observeUiEvents()
+        if (savedInstanceState == null) {
+            viewModel.getDataForMainScreen()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
         viewModel.getDataForMainScreen()
     }
 
     override fun showLoadingState() {
         binding.nsvMainScreenView.visibility = View.GONE
         binding.pbMainScreen.visibility = View.VISIBLE
+        binding.srlMainRefresh.isRefreshing = false
     }
 
     override fun showContentState(data: MainData) {
         bindLists(data)
         binding.pbMainScreen.visibility = View.GONE
         binding.nsvMainScreenView.visibility = View.VISIBLE
+        binding.srlMainRefresh.isRefreshing = false
     }
 
     override fun showErrorState(error: Throwable) {
-        val uiError = error.toUiError()
-        binding.nsvMainScreenView.visibility = View.GONE
         binding.pbMainScreen.visibility = View.GONE
-        when (uiError) {
-            is MainUiError.NetworkError -> {
-                Toast.makeText(requireContext(), "Проблемы с интернетом...", Toast.LENGTH_SHORT)
-                    .show()
-            }
-
-            is MainUiError.UnknownError -> {
-                Toast.makeText(requireContext(), "Проблемы с интернетом...", Toast.LENGTH_SHORT)
-                    .show()
-            }
-        }
+        binding.srlMainRefresh.isRefreshing = false
+        Toast.makeText(
+            requireContext(),
+            error.localizedMessage ?: "Произошла какая-то не сетевая ошибка...",
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
     override fun initViews() {
@@ -91,10 +99,36 @@ class MainFragment :
         binding.rvInterestingExcursions.setHorizontalOrientation()
     }
 
-    override fun initListeners() {}
+    override fun initListeners() {
+        binding.srlMainRefresh.setOnRefreshListener {
+            viewModel.onRefresh()
+        }
+    }
+
+    private fun observeUiEvents() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.events.collect { event ->
+                    handleUiEvent(event)
+                }
+            }
+        }
+    }
+
+    private fun handleUiEvent(event: MainUiEvent) {
+        when (event) {
+            is MainUiEvent.OpenNetworkError -> {
+                view?.post {
+                    (requireActivity() as AppNavigator).openNetworkErrorFragment()
+                }
+            }
+            is MainUiEvent.RefreshScreen -> {
+                viewModel.getDataForMainScreen()
+            }
+        }
+    }
 
     private fun bindLists(data: MainData) {
-        Log.d("myFuckingVideosListSize", data.videos[0].cover)
         videoAdapter.submitList(data.videos)
         articleAdapter.submitList(data.articles)
         placeAdapter.submitList(data.places)

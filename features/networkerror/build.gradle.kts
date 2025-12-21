@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.rugid.core.data"
+    namespace = "com.rugid.feature.networkerror"
     compileSdk {
         version = release(36)
     }
@@ -25,6 +25,9 @@ android {
             )
         }
     }
+    buildFeatures {
+        viewBinding = true
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -35,14 +38,13 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:domain"))
-
-    // Koin
-    implementation(libs.koin.android)
+    implementation(project(":core:ui"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
+    implementation(libs.androidx.legacy.support.v4)
+    implementation(libs.androidx.recyclerview)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/bg_main"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".NetworkErrorFragment">
+
+    <ImageView
+        android:id="@+id/ivNoInternetIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/cloud_off" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvNoConnectionText"
+        style="@style/Headline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/padding_16dp"
+        android:textColor="@color/black_font_main"
+        android:text="@string/no_connection" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvNoConnectionDetailsText"
+        style="@style/Headline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/padding_8dp"
+        android:text="@string/no_connection_details"
+        android:textColor="@color/black_font_third"
+        android:gravity="center" />
+
+    <Button
+        android:id="@+id/bRefreshContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginHorizontal="120dp"
+        android:background="@drawable/lightblue_button_bg"
+        android:text="@string/refresh"
+        android:textColor="@color/accent_blue"
+        android:textAppearance="@style/Headline3" />
+
+</LinearLayout>
